@@ -16,6 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BN } from "@coral-xyz/anchor";
 import useTransactionToast from "./use-transaction-toast";
 import { toast } from "sonner";
+import { parseTxError } from "@/lib/error-parser";
 
 const useVotingProgram = (pollId?: number) => {
   const { connection } = useConnection();
@@ -61,10 +62,18 @@ const useVotingProgram = (pollId?: number) => {
       queryClient.invalidateQueries({
         queryKey: ["get-program-account", { cluster }],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["get-polls", { cluster }],
+      });
     },
     onError: (err) => {
-      toast.error("Failed to initialize poll");
-      console.error(err);
+      const errorMsg = parseTxError(err);
+      if (typeof errorMsg === "string") {
+        toast.error(errorMsg);
+      } else {
+        toast.error("Failed to initialize poll");
+        console.error(errorMsg);
+      }
     },
   });
 
@@ -96,8 +105,13 @@ const useVotingProgram = (pollId?: number) => {
       });
     },
     onError: (err) => {
-      toast.error("Failed to add candidate");
-      console.error(err);
+      const errorMsg = parseTxError(err);
+      if (typeof errorMsg === "string") {
+        toast.error(errorMsg);
+      } else {
+        toast.error("Failed to add candidate");
+        console.error(errorMsg);
+      }
     },
   });
 
@@ -110,10 +124,21 @@ const useVotingProgram = (pollId?: number) => {
       queryClient.invalidateQueries({
         queryKey: ["get-polls", { cluster }],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["get-polls", { cluster }],
+      });
     },
     onError: (err) => {
-      toast.error("Failed to close poll");
-      console.error(err);
+      console.error(err, "failed to close poll");
+      console.error(parseTxError(err), "failed to close poll");
+      console.error(typeof err, "failed to close poll");
+      const errorMsg = parseTxError(err);
+      if (typeof errorMsg === "string") {
+        toast.error(errorMsg);
+      } else {
+        toast.error("Failed to close poll");
+        console.error(errorMsg);
+      }
     },
   });
 
@@ -131,10 +156,18 @@ const useVotingProgram = (pollId?: number) => {
       queryClient.invalidateQueries({
         queryKey: ["get-candidates-for-poll", { cluster, pollId: pollId }],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["get-polls", { cluster }],
+      });
     },
     onError: (err) => {
-      toast.error("Failed to vote for candidate");
-      console.error(err);
+      const errorMsg = parseTxError(err);
+      if (typeof errorMsg === "string") {
+        toast.error(errorMsg);
+      } else {
+        toast.error("Failed to vote for candidate");
+        console.error(errorMsg);
+      }
     },
   });
 
