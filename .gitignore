@@ -5,8 +5,8 @@ node_modules/
 # Build outputs
 dist/
 build/
-target/
 # Allow generated IDL and types needed for deployment
+apps/anchor/target/*
 !apps/anchor/target/idl/
 !apps/anchor/target/types/
 !apps/anchor/target/deploy/
