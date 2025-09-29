@@ -38,36 +38,15 @@ export const getVotingProgramId = (cluster: Cluster) => {
 
 export const getPolls = async (program: Program<Voting>) => {
   console.log("Getting polls");
-  const [pollCounterPda] = PublicKey.findProgramAddressSync(
-    [Buffer.from("poll_counter")],
-    program.programId
-  );
-  const pollCounterAcc = await program.account.pollCounter.fetch(
-    pollCounterPda
-  );
-  const pollCount = pollCounterAcc.pollCount;
-  const polls = [];
-  for (let i = 0; i < pollCount.toNumber(); i++) {
-    try {
-      const [pollPda] = PublicKey.findProgramAddressSync(
-        [Buffer.from("poll"), new anchor.BN(i).toArrayLike(Buffer, "le", 8)],
-        program.programId
-      );
-      const pollAcc = await program.account.poll.fetch(pollPda);
-      polls.push(pollAcc);
-    } catch (error) {
-      console.error(`Error fetching poll ${i}: ${error}`);
-    }
-  }
-
+  const polls = await program.account.poll.all();
   return polls.map((poll) => ({
-    pollId: poll.pollId.toNumber(),
-    pollName: poll.pollName,
-    pollDescription: poll.pollDescription,
-    pollStart: poll.pollStart.toNumber(),
-    pollEnd: poll.pollEnd.toNumber(),
-    candidatesCount: poll.candidatesCount,
-    pollAuthority: poll.pollAuthority,
+    pollId: poll.account.pollId.toNumber(),
+    pollName: poll.account.pollName,
+    pollDescription: poll.account.pollDescription,
+    pollStart: poll.account.pollStart.toNumber(),
+    pollEnd: poll.account.pollEnd.toNumber(),
+    pollAuthority: poll.account.pollAuthority,
+    candidatesCount: poll.account.candidatesCount,
   }));
 };
 
