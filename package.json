@@ -1,0 +1,37 @@
+{
+  "name": "solana-dapp-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "build": "pnpm run --recursive build",
+    "test": "pnpm run --recursive test",
+    "lint": "pnpm run --recursive lint",
+    "clean": "pnpm run --recursive clean && rimraf node_modules",
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,md}\"",
+    "anchor:build": "pnpm --filter anchor build",
+    "anchor:test": "pnpm --filter anchor test",
+    "anchor:deploy": "pnpm --filter anchor deploy",
+    "anchor:localnet": "pnpm --filter anchor localnet",
+    "web:dev": "pnpm --filter web dev",
+    "web:build": "pnpm --filter web build",
+    "web:preview": "pnpm --filter web preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "prettier": "^3.2.4",
+    "rimraf": "^5.0.5",
+    "turbo": "^1.12.4",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.1",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
