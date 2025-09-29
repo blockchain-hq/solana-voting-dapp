@@ -10,7 +10,8 @@
     "./types/*": "./target/types/*"
   },
   "scripts": {
-    "build": "anchor build",
+    "build": "if [ \"$VERCEL\" = \"1\" ] || [ \"$CI\" = \"true\" ]; then echo 'Skipping anchor build in CI - using pre-built artifacts'; else anchor build; fi",
+    "build:local": "anchor build",
     "test": "anchor test",
     "deploy": "anchor deploy",
     "localnet": "solana-test-validator",
