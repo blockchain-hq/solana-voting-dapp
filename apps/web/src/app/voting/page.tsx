@@ -4,10 +4,14 @@ import useVotingProgram from "@/hooks/use-voting-program";
 import PollCard from "@/components/voting-ui/poll-card";
 import { LoaderCircle } from "lucide-react";
 import AddPollModal from "@/components/voting-ui/add-poll-modal";
+import { useEffect } from "react";
 
 const VotingPage = () => {
   const { getPollsQuery } = useVotingProgram();
   const { data: polls, isPending } = getPollsQuery;
+  useEffect(() => {
+    console.log(polls);
+  }, [polls]);
   // sort the polls in descending order by pollId
   const sortedPolls = polls?.sort((a, b) => b.pollId - a.pollId);
 
