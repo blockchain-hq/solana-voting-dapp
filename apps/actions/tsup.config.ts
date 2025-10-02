@@ -2,13 +2,14 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["src/index.ts"],
-  format: ["cjs"],
+  format: ["esm"],
   target: "node18",
   bundle: true,
   clean: true,
   minify: false,
   sourcemap: true,
-  noExternal: ["@anchor/voting"], // Force bundling of this workspace dependency
+  noExternal: ["@anchor/voting"],
   splitting: false,
-  treeshake: true,
+  outDir: "api",
+  outExtension: () => ({ js: ".js" }),
 });

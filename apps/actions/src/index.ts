@@ -19,14 +19,12 @@ app.get("/", (c) => {
 
 app.route("/api/v1", rootRouter);
 
-serve(
-  {
-    fetch: app.fetch,
-    port: 5050,
-  },
-  (info) => {
-    console.log(`Server is running on http://localhost:${info.port}`);
-  }
-);
-
 export default app;
+
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  serve({
+    fetch: app.fetch,
+    port: 3001,
+  });
+  console.log("Server is running on port 3001");
+}
