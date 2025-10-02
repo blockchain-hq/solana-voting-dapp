@@ -1,20 +1,17 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: {
-    index: "src/index.ts",
-    "api/[[...route]]": "src/api/[[...route]].ts",
-  },
+  entry: ["src/api/[[...route]].ts"],
   format: ["esm"],
   target: "esnext",
   bundle: true,
   clean: true,
   minify: false,
   sourcemap: true,
-  noExternal: [/@anchor\/voting/],
+  noExternal: [/.*/], // Bundle everything
   splitting: false,
-  outDir: ".",
-  platform: "browser",
+  outDir: "api",
+  platform: "neutral",
   banner: {
     js: "// @ts-nocheck",
   },
