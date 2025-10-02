@@ -8,4 +8,7 @@ export default defineConfig({
   clean: true,
   minify: false,
   sourcemap: true,
+  noExternal: ["@anchor/voting"], // Force bundling of this workspace dependency
+  splitting: false,
+  treeshake: true,
 });
