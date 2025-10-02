@@ -1,0 +1,12 @@
+{
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/[[...route]]"
+    }
+  ]
+}
