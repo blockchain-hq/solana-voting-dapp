@@ -10,6 +10,7 @@ A decentralized voting application built on Solana blockchain, designed as an ed
 - **View Results**: Real-time voting results with vote counts for each candidate
 - **Poll Management**: Automatic poll lifecycle management with start/end times
 - **Wallet Integration**: Seamless integration with Solana wallet adapters
+- **Solana Actions (Blinks)**: API server for creating blockchain links that enable voting directly from social media and other platforms
 - **Responsive UI**: Modern, responsive interface built with Next.js and Tailwind CSS
 
 ## Architecture
@@ -26,7 +27,14 @@ This project is a monorepo built with:
 
 - **Framework**: Next.js 15 with React 19
 - **Styling**: Tailwind CSS with Shadcn UI
-- **State Management**: Jotai for state managementß
+- **State Management**: Jotai for state management
+
+### Solana Actions API
+
+- **Framework**: Hono.js (lightweight Node.js server)
+- **Port**: 3001
+- **Features**: Exposes Solana Actions (Blinks) endpoints for voting
+- **Integration**: Enables voting directly from Twitter, Discord, and other platforms that support Solana Actions
 
 ### Key Smart Contract Features
 
@@ -45,6 +53,11 @@ solana-voting-dapp/
 │   │   ├── programs/voting/    # Rust program source
 │   │   ├── tests/             # Integration tests
 │   │   └── target/            # Compiled program artifacts
+│   ├── actions/               # Solana Actions API server
+│   │   ├── src/               # API server source code
+│   │   │   ├── routes/        # API route handlers
+│   │   │   └── utils/         # Helper utilities
+│   │   └── dist/              # Compiled JavaScript output
 │   └── web/                   # Next.js frontend
 │       ├── src/app/           # Next.js app router pages
 │       ├── src/components/    # React components
@@ -125,7 +138,15 @@ solana-voting-dapp/
    pnpm web:dev
    ```
 
-5. **Visit the application**
+5. **Start the Solana Actions API server (optional)**
+
+   ```bash
+   pnpm actions:dev
+   ```
+
+   The API server will run on [http://localhost:3001](http://localhost:3001)
+
+6. **Visit the application**
    Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Usage Guide
@@ -169,6 +190,25 @@ solana-voting-dapp/
 - Results are displayed in real-time
 - Vote counts are updated after each vote
 - Results remain visible even after polls end
+
+### Using Solana Actions (Blinks)
+
+Solana Actions enable users to vote directly from social media platforms without leaving their feed:
+
+1. **Generate a Blink URL**:
+   - Format: `https://your-domain.com/api/v1/voting/{cluster}/{pollId}`
+   - Example: `https://your-domain.com/api/v1/voting/devnet/1`
+
+2. **Share on Social Media**:
+   - Post the Blink URL on Twitter, Discord, or any platform that supports Solana Actions
+   - Users will see an interactive voting card with all candidates
+
+3. **Vote with One Click**:
+   - Users click on their preferred candidate
+   - Their wallet prompts them to sign the transaction
+   - Vote is recorded on-chain instantly
+
+**Note**: The Actions API server must be running and publicly accessible for Blinks to work.
 
 ## Smart Contract Details
 
@@ -242,6 +282,33 @@ pnpm web:build
 pnpm web:start
 ```
 
+### Actions API Deployment
+
+The Actions API server can be deployed to any platform supporting Node.js:
+
+```bash
+# Build for production
+cd apps/actions
+pnpm build
+
+# Start production server
+pnpm start
+```
+
+**Deployment Platforms:**
+
+- Vercel (serverless)
+- Railway
+- Render
+- Fly.io
+- Any VPS with Node.js support
+
+**Environment Considerations:**
+
+- Ensure the server is publicly accessible for Blinks to work
+- Configure CORS settings for your domain
+- Consider rate limiting for production use
+
 ## Contributing
 
 This project is designed as an educational resource. Contributions are welcome!
@@ -262,6 +329,8 @@ This project was inspired by the [Solana Developer Bootcamp 2024](https://www.yo
 - **Program Derived Addresses (PDAs)**: Deterministic account addressing
 - **Account Management**: Solana's account model and rent
 - **Transaction Processing**: Instruction handling and validation
+- **Solana Actions (Blinks)**: Building shareable blockchain interactions
+- **API Development**: Creating endpoints for transaction generation
 - **Frontend Integration**: Connecting web apps to Solana programs
 - **Wallet Integration**: Using Solana wallet adapters
 
